@@ -1,5 +1,6 @@
 package dao;
 
+import bean.EcsVendas;
 import bean.EcsVendasProdutos;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -37,6 +38,15 @@ public class VendasProdutosDAO extends AbstractDAO {
         session.beginTransaction();
         Criteria criteria = session.createCriteria(EcsVendasProdutos.class);
         criteria.add(Restrictions.eq("idecsVendasProdutos", codigo));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
+    public Object listProdutos(EcsVendas ecsVendas) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(EcsVendasProdutos.class);
+        criteria.add(Restrictions.eq("ecsVendas", ecsVendas));
         List lista = criteria.list();
         session.getTransaction().commit();
         return lista;

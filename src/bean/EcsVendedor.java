@@ -26,7 +26,7 @@ public class EcsVendedor implements java.io.Serializable {
     public EcsVendedor() {
     }
 
-    public EcsVendedor(int idecsVendedor, String ecsNomeVendedor, String ecsCpf, String ecsRg, String ecsEmail, String ecsTelefone,  Date ecsDataNasc) {
+    public EcsVendedor(int idecsVendedor, String ecsNomeVendedor, String ecsCpf, String ecsRg, String ecsEmail, String ecsTelefone, Date ecsDataNasc) {
         this.idecsVendedor = idecsVendedor;
         this.ecsNomeVendedor = ecsNomeVendedor;
         this.ecsCpf = ecsCpf;
@@ -110,5 +110,21 @@ public class EcsVendedor implements java.io.Serializable {
 
     public void setEcsDataNasc(Date ecsDataNasc) {
         this.ecsDataNasc = ecsDataNasc;
+    }
+
+    @Override
+    public String toString() {
+        return this.idecsVendedor + " - " + this.ecsNomeVendedor;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof EcsVendedor) {
+            EcsVendedor ecsVendedor = (EcsVendedor) object;
+            if (ecsVendedor.getIdecsVendedor() == this.getIdecsVendedor()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

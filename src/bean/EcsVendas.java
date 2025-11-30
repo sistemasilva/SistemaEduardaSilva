@@ -4,6 +4,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -42,6 +44,7 @@ public class EcsVendas implements java.io.Serializable {
     }
 
     @Id
+    
 
     @Column(name = "ecs_idVendas", unique = true, nullable = false)
     public int getEcsIdVendas() {
@@ -52,7 +55,7 @@ public class EcsVendas implements java.io.Serializable {
         this.ecsIdVendas = ecsIdVendas;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ecs_cliente")
     public EcsCliente getEcsCliente() {
         return this.EcsCliente;
@@ -62,7 +65,7 @@ public class EcsVendas implements java.io.Serializable {
         this.EcsCliente = EcsCliente;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ecs_vendedor")
     public EcsVendedor getEcsVendedor() {
         return this.ecsVendedor;

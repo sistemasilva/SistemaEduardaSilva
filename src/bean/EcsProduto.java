@@ -112,4 +112,19 @@ public class EcsProduto implements java.io.Serializable {
         this.ecsCategoria = ecsCategoria;
     }
 
+    @Override
+    public String toString() {
+        return this.idecsProduto + " - " + this.ecsNome;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof EcsProduto) {
+            EcsProduto ecsProduto = (EcsProduto) object;
+            if (ecsProduto.getIdecsProduto() == this.getIdecsProduto()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

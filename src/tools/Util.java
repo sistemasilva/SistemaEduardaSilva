@@ -1,6 +1,11 @@
 package tools;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -34,6 +39,9 @@ public class Util {
                 //setSelectedIndex(-1);
 
             }
+            if (componentes[i] instanceof JCheckBox) {
+                ((JCheckBox) componentes[i]).setSelected(false);
+            }
         }
     }
 
@@ -42,10 +50,16 @@ public class Util {
         JOptionPane.showConfirmDialog(null, cad);
     }
 
-    public static boolean perguntar(String cad) {
-        JOptionPane.showConfirmDialog(null, cad);
-        return true;
+    public static boolean pergunta(String cad) {
+        int opcao = JOptionPane.showConfirmDialog(
+                null,
+                cad,
+                "Excluir",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
 
+        return opcao == JOptionPane.YES_OPTION;
     }
 
     public static int strToInt(String num) {
@@ -58,20 +72,26 @@ public class Util {
 
     }
 
-    public static double strDouble(String num) {
-        return 0;
-
+    public static double strToDouble(String valor) {
+        return Double.parseDouble(valor);
     }
 
     public static String doubleToStr(double num) {
-        return "";
+        return String.valueOf(num);
     }
 
     public static Date strToDate(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return formato.parse(data);
+        } catch (ParseException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
     public static String dateToStr(Date data) {
-        return "";
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return formato.format(data);
     }
 }

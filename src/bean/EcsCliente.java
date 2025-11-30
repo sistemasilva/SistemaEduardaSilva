@@ -196,4 +196,20 @@ public class EcsCliente implements java.io.Serializable {
         this.ecsEstadoCivil = ecsEstadoCivil;
     }
 
+    @Override
+    public String toString() {
+        return this.idecsCliente + " - " + this.ecsNomeCliente;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof EcsCliente) {
+            EcsCliente ecsCliente = (EcsCliente) object;
+            if (ecsCliente.getIdecsCliente() == this.getIdecsCliente()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
