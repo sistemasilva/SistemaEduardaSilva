@@ -51,6 +51,20 @@ public class UsuariosDAO extends AbstractDAO {
         return lista;
     }
 
+    public EcsUsuarios autenticar(String apelido, String senha) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(EcsUsuarios.class);
+        criteria.add(Restrictions.eq("ecsApelido", apelido));
+        criteria.add(Restrictions.eq("ecsSenha", senha));
+        criteria.add(Restrictions.eq("ecsAtivo", "S"));
+
+        EcsUsuarios usuario = (EcsUsuarios) criteria.uniqueResult();
+
+        session.getTransaction().commit();
+        return usuario;
+    }
+
     public static void main(String[] args) {
         UsuariosDAO usuariosDAO = new UsuariosDAO();
         usuariosDAO.listAll();

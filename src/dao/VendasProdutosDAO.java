@@ -33,6 +33,18 @@ public class VendasProdutosDAO extends AbstractDAO {
         session.getTransaction().commit();
     }
 
+    public void deleteProdutos(EcsVendas vendas) {
+        List lista = (List) listProdutos(vendas);
+        session.beginTransaction();
+        for (int i = 0; i < lista.size(); i++) {
+            EcsVendasProdutos vendprod = (EcsVendasProdutos) lista.get(i);
+            session.flush();
+            session.clear();
+            session.delete(vendprod);
+        }
+        session.getTransaction().commit();
+    }
+
     @Override
     public Object list(int codigo) {
         session.beginTransaction();

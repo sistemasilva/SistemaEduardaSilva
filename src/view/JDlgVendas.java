@@ -63,12 +63,27 @@ public class JDlgVendas extends javax.swing.JDialog {
 
     }
 
+    private void contaTotal() {
+        double total = 0;
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            EcsVendasProdutos produto = controllerVenProd.getBean(i);
+            total += produto.getEcsQuantidade() * produto.getEcsValorUnitario();
+        }
+
+        Ecs_jTxtTot.setText("R$ " + String.format("%,.2f", total));
+    }
+
     public EcsVendas viewBean() {
+        String valorStr = Ecs_jTxtTot.getText()
+                .replace("R$", "")
+                .replace(".", "")
+                .replace(",", ".")
+                .trim();
         EcsVendas ecsVendas = new EcsVendas();
         ecsVendas.setEcsIdVendas(Util.strToInt(Ecs_jTxtCod.getText()));
         ecsVendas.setEcsDataVenda(Util.strToDate(Ecs_jFmtDataVend.getText()));
-        ecsVendas.setEcsTotal(Util.strToDouble(Ecs_jTxtTot.getText()));
-        ecsVendas.setEcsDesconto(Util.strToDouble(Ecs_jTxtDesc.getText()));
+        ecsVendas.setEcsTotal(Util.strToDouble(valorStr));
+        ecsVendas.setEcsDesconto(0);
         ecsVendas.setEcsCliente((EcsCliente) Ecs_jCboCliente.getSelectedItem());
         ecsVendas.setEcsVendedor((EcsVendedor) Ecs_jCboVendedor.getSelectedItem());
         ecsVendas.setEcsFormaPagamento(Ecs_jCboFormaPagamento.getSelectedIndex());
@@ -144,6 +159,12 @@ public class JDlgVendas extends javax.swing.JDialog {
 
         jLabel5.setDisplayedMnemonic('T');
         jLabel5.setText("Total");
+
+        Ecs_jTxtTot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ecs_jTxtTotActionPerformed(evt);
+            }
+        });
 
         jLabel6.setDisplayedMnemonic('D');
         jLabel6.setText("Desconto");
@@ -254,8 +275,8 @@ public class JDlgVendas extends javax.swing.JDialog {
                                 .addComponent(jLabel4)
                                 .addGap(65, 65, 65))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(Ecs_jTxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
+                                .addComponent(Ecs_jTxtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(Ecs_jCboCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                                 .addComponent(Ecs_jCboVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -352,9 +373,37 @@ public class JDlgVendas extends javax.swing.JDialog {
     }//GEN-LAST:event_Ecs_jTxtDescActionPerformed
 
     private void jBtnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncluirActionPerformed
-        Util.habilitar(true, jBtnAltrProd, jBtnExcProd, jBtnIncrProd, jBtnConfirmar, jBtnCancelar, Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
-        Util.limpar(Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
-        Util.habilitar(false, jBtnIncluir, jBtnExcluir, jBtnAlterar, jBtnPesquisar);
+        Util.habilitar(
+                true,
+                jBtnAltrProd,
+                jBtnExcProd,
+                jBtnIncrProd,
+                jBtnConfirmar,
+                jBtnCancelar,
+                Ecs_jTxtCod,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jTxtTot,
+                Ecs_jCboVendedor
+        );
+
+        Util.limpar(
+                Ecs_jTxtCod,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jTxtTot,
+                Ecs_jCboVendedor
+        );
+
+        Util.habilitar(
+                false,
+                jBtnIncluir,
+                jBtnExcluir,
+                jBtnAlterar,
+                jBtnPesquisar,
+                Ecs_jTxtTot
+        );
+
         Ecs_jTxtCod.grabFocus();
         incluir = true;
         controllerVenProd.setList(new ArrayList());
@@ -365,29 +414,55 @@ public class JDlgVendas extends javax.swing.JDialog {
             Util.mensagem("Pesquise uma Vendas antes de Alterar");
             return;
         }
-        Util.habilitar(true, jBtnAltrProd, jBtnExcProd, jBtnIncrProd, jBtnConfirmar, jBtnCancelar, Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
-        Util.habilitar(false, jBtnIncluir, jBtnExcluir, jBtnAlterar, jBtnPesquisar);
+        Util.habilitar(
+                true,
+                jBtnAltrProd,
+                jBtnExcProd,
+                jBtnIncrProd,
+                jBtnConfirmar,
+                jBtnCancelar,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jTxtTot,
+                Ecs_jCboVendedor
+        );
+
+        Util.habilitar(
+                false,
+                jBtnIncluir,
+                jBtnExcluir,
+                jBtnAlterar,
+                jBtnPesquisar
+        );
+
         Util.habilitar(false, Ecs_jTxtCod);
         Ecs_jFmtDataVend.grabFocus();
         incluir = false;
     }//GEN-LAST:event_jBtnAlterarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
-        if (Ecs_jTxtCod.getText().trim().isEmpty()) {
-            Util.mensagem("Pesquise uma Venda antes de Excluir");
-            return;
+        if (Util.pergunta("Deseja excluir ?")) {
+            VendasDAO vendasDAO = new VendasDAO();
+            VendasProdutosDAO vendasProdutosDAO = new VendasProdutosDAO();
+
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                EcsVendasProdutos vp = controllerVenProd.getBean(i);
+                vendasProdutosDAO.delete(vp);
+            }
+
+            vendasDAO.delete(viewBean());
         }
 
-        if (Util.pergunta("Deseja excluir ?") == true) {
-            VendasDAO ecsVendasDAO = new VendasDAO();
-            VendasProdutosDAO vendasProdutosDAO = new VendasProdutosDAO();
-            for (int ind = 0; ind < jTable1.getRowCount(); ind++) {
-                EcsVendasProdutos ecsVendasProdutos = controllerVenProd.getBean(ind);
-                vendasProdutosDAO.delete(ecsVendasProdutos);
-            }
-            ecsVendasDAO.delete(viewBean());
-        }
-        Util.limpar(Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
+        Util.limpar(
+                Ecs_jTxtCod,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jCboVendedor,
+                Ecs_jTxtTot
+        );
+
+        Util.habilitar(false, jBtnConfirmar, jBtnCancelar, jBtnAlterar, jBtnExcluir);
+        Util.habilitar(true, Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jTxtTot, Ecs_jCboCliente, Ecs_jCboVendedor, jBtnIncluir, jBtnPesquisar);
         controllerVenProd.setList(new ArrayList());
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 
@@ -395,22 +470,46 @@ public class JDlgVendas extends javax.swing.JDialog {
         // TODO add your handling code here:
         VendasDAO vendasDAO = new VendasDAO();
         VendasProdutosDAO vendasProdutosDAO = new VendasProdutosDAO();
-        EcsVendas ecsVendas = viewBean();
-        if (incluir == true) {
-            vendasDAO.insert(ecsVendas);
-            for (int ind = 0; ind < jTable1.getRowCount(); ind++) {
-                EcsVendasProdutos ecsVendasProdutos = controllerVenProd.getBean(ind);
-                ecsVendasProdutos.setEcsVendas(ecsVendas);
-                vendasProdutosDAO.insert(ecsVendasProdutos);
+        EcsVendas vendas = viewBean();
+
+        if (incluir) {
+            vendasDAO.insert(vendas);
+
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                EcsVendasProdutos vp = controllerVenProd.getBean(i);
+                vp.setEcsVendas(vendas);
+                vendasProdutosDAO.insert(vp);
             }
         } else {
-            vendasDAO.update(ecsVendas);
+            vendasDAO.update(vendas);
+            vendasProdutosDAO.deleteProdutos(vendas);
 
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                EcsVendasProdutos vp = controllerVenProd.getBean(i);
+                vp.setEcsVendas(vendas);
+                vendasProdutosDAO.insert(vp);
+            }
         }
 
-        Util.habilitar(false, jBtnAltrProd, jBtnExcProd, jBtnIncrProd, jBtnConfirmar, jBtnCancelar, Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
-        Util.habilitar(true, jBtnIncluir, jBtnExcluir, jBtnAlterar, jBtnPesquisar);
-        Util.limpar(Ecs_jTxtCod, Ecs_jFmtDataVend, Ecs_jCboCliente, Ecs_jTxtDesc, Ecs_jTxtTot, Ecs_jCboVendedor, Ecs_jCboFormaPagamento);
+        Util.habilitar(false,
+                Ecs_jTxtCod,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jCboVendedor,
+                Ecs_jTxtTot,
+                jBtnConfirmar,
+                jBtnCancelar
+        );
+
+        Util.habilitar(true, jBtnIncluir, jBtnPesquisar);
+
+        Util.limpar(
+                Ecs_jTxtCod,
+                Ecs_jFmtDataVend,
+                Ecs_jCboCliente,
+                Ecs_jCboVendedor,
+                Ecs_jTxtTot
+        );
         controllerVenProd.setList(new ArrayList());
     }//GEN-LAST:event_jBtnConfirmarActionPerformed
 
@@ -429,25 +528,40 @@ public class JDlgVendas extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnPesquisarActionPerformed
 
     private void jBtnIncrProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncrProdActionPerformed
-        JDlgVendasProdutos jDlgVendasProdutos = new JDlgVendasProdutos(null, true);
-        jDlgVendasProdutos.setTelaAnterior(this);
-        jDlgVendasProdutos.setVisible(true);
+        JDlgVendasProdutos dlg = new JDlgVendasProdutos(null, true);
+        dlg.setTelaAnterior(this, null);
+        dlg.setVisible(true);
+        contaTotal();
     }//GEN-LAST:event_jBtnIncrProdActionPerformed
 
     private void jBtnAltrProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAltrProdActionPerformed
-        JDlgVendasProdutos jDlgVendasProdutos = new JDlgVendasProdutos(null, true);
-        jDlgVendasProdutos.setVisible(true);
+        if (jTable1.getSelectedRow() == -1) {
+            Util.mensagem("Selecione uma linha!");
+            return;
+        }
+
+        EcsVendasProdutos vp = controllerVenProd.getBean(jTable1.getSelectedRow());
+        JDlgVendasProdutos dlg = new JDlgVendasProdutos(null, true);
+        dlg.setTelaAnterior(this, vp);
+        dlg.setVisible(true);
+        contaTotal();
     }//GEN-LAST:event_jBtnAltrProdActionPerformed
 
     private void jBtnExcProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcProdActionPerformed
         if (jTable1.getSelectedRow() == -1) {
-            Util.mensagem("Selecione uma linha para poder apagar");
-        } else {
-            if (Util.pergunta("Deseja excluir ?") == true) {
-                controllerVenProd.removeBean(jTable1.getSelectedRow());
-            }
+            Util.mensagem("Selecione uma linha!");
+            return;
+        }
+
+        if (Util.pergunta("Deseja excluir o produto ?")) {
+            controllerVenProd.removeBean(jTable1.getSelectedRow());
+            contaTotal();
         }
     }//GEN-LAST:event_jBtnExcProdActionPerformed
+
+    private void Ecs_jTxtTotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ecs_jTxtTotActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Ecs_jTxtTotActionPerformed
 
     /**
      * @param args the command line arguments

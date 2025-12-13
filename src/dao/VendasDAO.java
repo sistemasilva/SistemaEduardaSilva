@@ -1,8 +1,10 @@
 package dao;
 
+import bean.EcsCliente;
 import bean.EcsVendas;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class VendasDAO extends AbstractDAO {
@@ -37,6 +39,45 @@ public class VendasDAO extends AbstractDAO {
         session.beginTransaction();
         Criteria criteria = session.createCriteria(EcsVendas.class);
         criteria.add(Restrictions.eq("idecsVendas", codigo));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
+    public Object listCliente(String clientes) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(EcsVendas.class);
+
+        criteria.createAlias("ecsCliente", "c");
+        criteria.add(Restrictions.like("c.ecsNomeCliente", "%" + clientes + "%", MatchMode.ANYWHERE));
+
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
+    public Object listVendedor(String vendedor) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(EcsVendas.class);
+
+        criteria.createAlias("ecsVendedor", "v");
+        criteria.add(Restrictions.like("v.ecsNomeVendedor", "%" + vendedor + "%", MatchMode.ANYWHERE));
+
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
+    public Object listClienteVendedor(String clientes, String vendedor) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(EcsVendas.class);
+
+        criteria.createAlias("ecsCliente", "c");
+        criteria.add(Restrictions.like("c.ecsNomeCliente", "%" + clientes + "%", MatchMode.ANYWHERE));
+
+        criteria.createAlias("ecsVendedor", "v");
+        criteria.add(Restrictions.like("v.ecsNomeVendedor", "%" + vendedor + "%", MatchMode.ANYWHERE));
+
         List lista = criteria.list();
         session.getTransaction().commit();
         return lista;

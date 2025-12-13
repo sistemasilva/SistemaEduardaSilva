@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 public class EcsVendas implements java.io.Serializable {
 
     private int ecsIdVendas;
-    private EcsCliente EcsCliente;
+    private EcsCliente ecsCliente;
     private EcsVendedor ecsVendedor;
     private Date ecsDataVenda;
     private double ecsTotal;
@@ -34,8 +34,8 @@ public class EcsVendas implements java.io.Serializable {
         this.ecsDataVenda = ecsDataVenda;
     }
 
-    public EcsVendas(EcsCliente EcsCliente, EcsVendedor ecsVendedor, Date ecsDataVenda, double ecsTotal, int ecsFormaPagamento, double ecsDesconto) {
-        this.EcsCliente = EcsCliente;
+    public EcsVendas(EcsCliente ecsCliente, EcsVendedor ecsVendedor, Date ecsDataVenda, double ecsTotal, int ecsFormaPagamento, double ecsDesconto) {
+        this.ecsCliente = ecsCliente;
         this.ecsVendedor = ecsVendedor;
         this.ecsDataVenda = ecsDataVenda;
         this.ecsTotal = ecsTotal;
@@ -58,11 +58,11 @@ public class EcsVendas implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ecs_cliente")
     public EcsCliente getEcsCliente() {
-        return this.EcsCliente;
+        return this.ecsCliente;
     }
 
-    public void setEcsCliente(EcsCliente EcsCliente) {
-        this.EcsCliente = EcsCliente;
+    public void setEcsCliente(EcsCliente ecsCliente) {
+        this.ecsCliente = ecsCliente;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

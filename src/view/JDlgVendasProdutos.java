@@ -17,7 +17,7 @@ import tools.Util;
 public class JDlgVendasProdutos extends javax.swing.JDialog {
 
     JDlgVendas jDlgVendas;
-
+    private boolean incluir;
     public JDlgVendasProdutos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -32,8 +32,15 @@ public class JDlgVendasProdutos extends javax.swing.JDialog {
         Util.habilitar(false, jTxtValorUnitario, jTxtTotal);
     }
 
-    public void setTelaAnterior(JDlgVendas jDlgVendas) {
+    public void setTelaAnterior(JDlgVendas jDlgVendas, EcsVendasProdutos vendasProd) {
         this.jDlgVendas = jDlgVendas;
+        if (vendasProd != null) {
+            incluir = false;
+            jCboProdutos.setSelectedItem(vendasProd.getEcsProduto());
+            jTxtQuantidade.setText(Util.intToStr(vendasProd.getEcsQuantidade()));
+        } else {
+            incluir = true;
+        }
     }
 
     @SuppressWarnings("unchecked")
